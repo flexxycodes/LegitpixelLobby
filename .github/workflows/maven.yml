@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install TagAPI manually
+        run: |
+          mkdir -p libs
+          curl -L -o libs/TagAPI.jar https://ci.md-5.net/job/TagAPI/lastSuccessfulBuild/artifact/target/TagAPI.jar
+          mvn install:install-file -Dfile=libs/TagAPI.jar -DgroupId=org.kitteh -DartifactId=tag -Dversion=1.0 -Dpackaging=jar
+          
       - name: Checkout repository
         uses: actions/checkout@v4
 
