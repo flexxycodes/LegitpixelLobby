@@ -3,7 +3,7 @@ name: Build and Release with Maven
 on:
   push:
     branches:
-      - '**'  # Triggers on all branches
+      - '**'
 
 jobs:
   build:
@@ -25,7 +25,22 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-maven-
+            ${{ runner.os }}-maven
+
+      - name: Download BuildTools
+        run: |
+          mkdir buildtools
+          cd buildtools
+          curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+
+      - name: Build Spigot 1.8.8 and install to local repo
+        run: |
+          cd buildtools
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          java -jar BuildTools.jar --rev 1.8.8
+        env:
+          MAVEN_OPTS: -Xmx2G
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
