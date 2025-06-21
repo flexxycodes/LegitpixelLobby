@@ -48,7 +48,7 @@ jobs:
         env:
           MAVEN_OPTS: -Xmx2G
 
-          - name: Clear corrupted Kitteh tag jar
+      - name: Clear corrupted Kitteh tag jar
   run: rm -f ~/.m2/repository/org/kitteh/tag/1.0/tag-1.0.jar
 
       - name: Build with Maven
